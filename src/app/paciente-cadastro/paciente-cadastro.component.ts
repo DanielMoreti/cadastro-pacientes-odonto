@@ -1,0 +1,22 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-paciente-cadastro',
+  templateUrl: './paciente-cadastro.component.html',
+  styleUrls: ['./paciente-cadastro.component.css']
+})
+export class PacienteCadastroComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+  paciente: any = {};
+
+  cadastrarPaciente() {
+    console.log('Paciente cadastrado:', this.paciente);
+
+    this.paciente = {};
+  }
+}

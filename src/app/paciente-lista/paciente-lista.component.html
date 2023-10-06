@@ -1,0 +1,22 @@
+<div>
+  <h1>Lista de Pacientes</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Idade</th>
+        <th>E-mail</th>
+        <th>Telefone</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let paciente of pacientes">
+        <td>{{ paciente.nome }}</td>
+        <td>{{ paciente.idade }}</td>
+        <td>{{ paciente.email }}</td>
+        <td>{{ paciente.telefone }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <button (click)="redirecionarParaCadastro()">Cadastrar Paciente</button>
+</div>
