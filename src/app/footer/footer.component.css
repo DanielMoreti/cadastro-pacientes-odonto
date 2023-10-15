@@ -1,0 +1,12 @@
+.container {
+    background-color: #6f7bc2;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  /* Estilo para o texto no rodapé */
+  .container p {
+    margin: 0;
+  }
+
