@@ -5,6 +5,7 @@ import { PacienteListaComponent } from './paciente-lista/paciente-lista.componen
 
 const routes: Routes = [
   { path: 'cadastro-paciente', component: PacienteCadastroComponent },
+  { path: 'cadastro-paciente/:id', component: PacienteCadastroComponent },
   { path: 'lista-pacientes', component: PacienteListaComponent },
   { path: '', redirectTo: '/lista-pacientes', pathMatch: 'full' }
 ];

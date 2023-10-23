@@ -1,26 +1,49 @@
-<div>
-  <h1>Cadastro de Paciente</h1>
-  <form (ngSubmit)="cadastrarPaciente()">
-    <div class="form-group">
-      <label for="nome">Nome:</label>
-      <input type="text" id="nome" name="nome" [(ngModel)]="paciente.nome" required>
-    </div>
-
-    <div class="form-group">
-      <label for="idade">Idade:</label>
-      <input type="number" id="idade" name="idade" [(ngModel)]="paciente.idade" required>
-    </div>
-
-    <div class="form-group">
-      <label for="email">E-mail:</label>
-      <input type="email" id="email" name="email" [(ngModel)]="paciente.email" required>
-    </div>
-
-    <div class="form-group">
-      <label for="telefone">Telefone:</label>
-      <input type="tel" id="telefone" name="telefone" [(ngModel)]="paciente.telefone" required>
-    </div>
-
-    <button type="submit">Cadastrar</button>
-  </form>
+<br />
+<h1>Cadastro de Paciente</h1>
+<div class="row">
+  <div class="col-md-12">
+    <form class="example-form" [formGroup]="cadastroPacienteFormGroup">
+      <mat-form-field class="example-full-width">
+        <mat-label>Nome: </mat-label>
+        <input type="text" matInput formControlName="nomeFormControl" [errorStateMatcher]="matcher"
+          placeholder="Nome do paciente">
+        <mat-error *ngIf="cadastroPacienteFormGroup.get('nomeFormControl')?.hasError('required')">
+          Nome é <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Idade: </mat-label>
+        <input type="text" matInput formControlName="idadeFormControl" [errorStateMatcher]="matcher"
+          placeholder="Idade do paciente">
+        <mat-error *ngIf="cadastroPacienteFormGroup.get('idadeFormControl')?.hasError('required')">
+          Idade é <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="emailFormControl" [errorStateMatcher]="matcher"
+          placeholder="E-mail do paciente">
+        <mat-error *ngIf="cadastroPacienteFormGroup.get('emailFormControl')?.hasError('required')">
+          Email é <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Telefone: </mat-label>
+        <input type="text" matInput formControlName="telefoneFormControl" [errorStateMatcher]="matcher"
+          placeholder="Telefone do paciente">
+        <mat-error *ngIf="cadastroPacienteFormGroup.get('telefoneFormControl')?.hasError('required')">
+          Telefone é <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    
+      <app-paciente-cadastro-endereco
+        [cadastroPacienteFormGroup]="cadastroPacienteFormGroup"></app-paciente-cadastro-endereco>
+    
+        <br/>
+        <button routerLink="/lista-pacientes" mat-raised-button>Voltar</button>
+      <button style="float: right;" mat-raised-button color="primary" [disabled]="!cadastroPacienteFormGroup.valid">Cadastrar</button>
+    </form>
+  </div>
 </div>
+
+<!-- {{this.cadastroPacienteFormGroup.value | json}} -->

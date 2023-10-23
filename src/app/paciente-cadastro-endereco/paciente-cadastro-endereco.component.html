@@ -1,0 +1,10 @@
+<form class="example-form" [formGroup]="cadastroPacienteFormGroup">
+<mat-form-field class="example-full-width">
+  <mat-label>Endereço: </mat-label>
+  <input type="text" matInput formControlName="enderecoFormControl" [errorStateMatcher]="matcher"
+    placeholder="Endereço do paciente">
+  <mat-error *ngIf="cadastroPacienteFormGroup.get('enderecoFormControl')?.hasError('required')">
+    Endereço é <strong>requerido</strong>
+  </mat-error>
+</mat-form-field>
+</form>
