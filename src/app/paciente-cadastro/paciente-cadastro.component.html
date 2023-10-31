@@ -30,7 +30,7 @@
       <mat-form-field class="example-full-width">
         <mat-label>Telefone: </mat-label>
         <input type="text" matInput formControlName="telefoneFormControl" [errorStateMatcher]="matcher"
-          placeholder="Telefone do paciente">
+          placeholder="(99) 99999-9999">
         <mat-error *ngIf="cadastroPacienteFormGroup.get('telefoneFormControl')?.hasError('required')">
           Telefone é <strong>requerido</strong>
         </mat-error>
@@ -41,9 +41,10 @@
     
         <br/>
         <button routerLink="/lista-pacientes" mat-raised-button>Voltar</button>
-      <button style="float: right;" mat-raised-button color="primary" [disabled]="!cadastroPacienteFormGroup.valid">Cadastrar</button>
+      <button (click)="cadastrarPaciente()" style="float: right;" mat-raised-button color="primary" [disabled]="!cadastroPacienteFormGroup.valid">Cadastrar</button>
     </form>
   </div>
 </div>
-
-<!-- {{this.cadastroPacienteFormGroup.value | json}} -->
+<br/>
+<h4><b>Local Storage</b></h4>
+{{mockPacienteLocalStorage | json }}
