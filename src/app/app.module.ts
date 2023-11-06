@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { PacienteCadastroEnderecoComponent } from './paciente-cadastro-endereco/paciente-cadastro-endereco.component';
 import {MatTableModule} from '@angular/material/table';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [	
@@ -41,7 +42,8 @@ import {MatTableModule} from '@angular/material/table';
     MatInputModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatTableModule
+    MatTableModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

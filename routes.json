@@ -1,0 +1,4 @@
+{
+    "/paciente": "/patient",
+    "/paciente/:id": "/patient/:id"
+}

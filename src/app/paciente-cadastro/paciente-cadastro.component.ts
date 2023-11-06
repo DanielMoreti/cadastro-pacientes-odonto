@@ -1,10 +1,12 @@
-import { Component, ElementRef, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PacienteCadastroEnderecoComponent } from '../paciente-cadastro-endereco/paciente-cadastro-endereco.component';
-import { ActivatedRoute } from '@angular/router';
+import { Paciente } from '../paciente-lista/paciente-lista.component';
 import { PacienteService } from '../services/paciente.service';
-import { Pacinete } from '../paciente-lista/paciente-lista.component';
+import { MockPacienteService } from '../services/mock-paciente.service';
+import { CountCadastroPacienteService } from '../services/count-cadastro-paciente.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -19,27 +21,34 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: './paciente-cadastro.component.html',
   styleUrls: ['./paciente-cadastro.component.css']
 })
-export class PacienteCadastroComponent implements OnInit {
+export class PacienteCadastroComponent implements OnInit, OnDestroy {
 
   @Output() cadastroPacienteFormGroup: FormGroup;
   @ViewChild(PacienteCadastroEnderecoComponent) childComponent: PacienteCadastroEnderecoComponent;
-  mockPacienteLocalStorage: Pacinete;
+  mockPacienteLocalStorage: Paciente;
+  public id_paciente: number;
 
   matcher = new MyErrorStateMatcher();
   paciente: any = {};
 
-  constructor(private route: ActivatedRoute, private pacienteService: PacienteService) {
+  constructor(private _countCadastroPacienteService: CountCadastroPacienteService, private route: ActivatedRoute, private _pacienteService: PacienteService, private router: Router, private _mockPacienteService: MockPacienteService) {
 
   }
 
   ngAfterViewInit() {
     this.childComponent.validarServicoOnline();
+   
   }
 
-  ngOnInit() {
+  ngOnDestroy(): void {
+    this._countCadastroPacienteService.adicionaMaisUmNoContador();
+  }
 
-    this.route.params.subscribe(params => {
-      const id = params['id'];
+
+  ngOnInit() {
+    this.route.params.subscribe((params: any) => {
+      this.id_paciente = params['id'];
+      this.consultaPorIdPaciente(this.id_paciente);
     });
 
     this.cadastroPacienteFormGroup = new FormGroup({
@@ -53,12 +62,63 @@ export class PacienteCadastroComponent implements OnInit {
     this.mostrarInformacaoCadastroTemporario();
   }
 
-  mostrarInformacaoCadastroTemporario() {
+  private consultaPorIdPaciente(id_paciente: Number) {
+    this._pacienteService.getPaciente(id_paciente)
+      .then((data) => {
+        this.cadastroPacienteFormGroup.get('nomeFormControl')?.setValue(data.nome);
+        this.cadastroPacienteFormGroup.get('idadeFormControl')?.setValue(data.idade);
+        this.cadastroPacienteFormGroup.get('emailFormControl')?.setValue(data.email);
+        this.cadastroPacienteFormGroup.get('telefoneFormControl')?.setValue(data.telefone);
+        this.cadastroPacienteFormGroup.get('enderecoFormControl')?.setValue(data.endereco);
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar dados:', error);
+      });
+  }
+
+  public cadastraPaciente(): void {
+    var paciente: Paciente = {
+      nome: this.cadastroPacienteFormGroup.get('nomeFormControl')?.value,
+      idade: this.cadastroPacienteFormGroup.get('idadeFormControl')?.value,
+      email: this.cadastroPacienteFormGroup.get('emailFormControl')?.value,
+      telefone: this.cadastroPacienteFormGroup.get('telefoneFormControl')?.value,
+      endereco: this.cadastroPacienteFormGroup.get('enderecoFormControl')?.value,
+    }
+
+    this._pacienteService.postPaciente(paciente)
+      .then((data) => {
+        this.router.navigate(['/lista-pacientes']);
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar dados:', error);
+      });
+  }
+
+  public atualizaPaciente(): void {
+    var paciente: Paciente = {
+      id: Number(this.id_paciente),
+      nome: this.cadastroPacienteFormGroup.get('nomeFormControl')?.value,
+      idade: this.cadastroPacienteFormGroup.get('idadeFormControl')?.value,
+      email: this.cadastroPacienteFormGroup.get('emailFormControl')?.value,
+      telefone: this.cadastroPacienteFormGroup.get('telefoneFormControl')?.value,
+      endereco: this.cadastroPacienteFormGroup.get('enderecoFormControl')?.value,
+    }
+
+    this._pacienteService.putPaciente(paciente)
+      .then((data) => {
+        this.router.navigate(['/lista-pacientes']);
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar dados:', error);
+      });
+  }
+
+  public mostrarInformacaoCadastroTemporario(): void {
     this.mockPacienteLocalStorage = this.getPaciente();
   }
 
-  public cadastrarPaciente(): void {
-    var paciente: Pacinete = {
+  public mockPaciente(): void {
+    var paciente: Paciente = {
       id: 0,
       nome: this.cadastroPacienteFormGroup.get('nomeFormControl')?.value,
       idade: this.cadastroPacienteFormGroup.get('idadeFormControl')?.value,
@@ -71,19 +131,19 @@ export class PacienteCadastroComponent implements OnInit {
     this.mostrarInformacaoCadastroTemporario();
   }
 
-  private savePaciente(pacinte: Pacinete): void {
+  private savePaciente(pacinte: Paciente): void {
     const entity = pacinte;
-    this.pacienteService.saveEntity(entity, 'minhaEntidade');
+    this._mockPacienteService.saveEntity(entity, 'minhaEntidade');
   }
 
   // Método para obter uma entidade do localStorage
-  private getPaciente(): Pacinete {
-    const entity = this.pacienteService.getEntity('minhaEntidade');
+  private getPaciente(): Paciente {
+    const entity = this._mockPacienteService.getEntity('minhaEntidade');
     return entity;
   }
 
   // Método para remover uma entidade do localStorage
   private removePaciente(): void {
-    this.pacienteService.removeEntity('minhaEntidade');
+    this._mockPacienteService.removeEntity('minhaEntidade');
   }
 }

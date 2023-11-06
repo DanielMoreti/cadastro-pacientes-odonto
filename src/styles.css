@@ -17,7 +17,7 @@ html, body {
 }
 
 .mat-sidenav-container .mat-sidenav label {
-  color: white;
+  color: rgb(150, 150, 150);
   font: 500 20px/32px Roboto,"Helvetica Neue",sans-serif;
 }
 
@@ -30,15 +30,15 @@ html, body {
   outline: 0px;
   margin: 5px 0px;
   text-decoration: none;
-  color: white;
+  color: rgb(150, 150, 150);
   padding: 5px 15px;
   border-radius: 5px;
 }
 .mat-sidenav-container .mat-sidenav nav a:hover {
-  color: yellow;
+  color: white;
 }
 .mat-sidenav-container .mat-sidenav nav a.active {
-  color: yellow;
+  color: white;
   background-color: rgba(0, 0, 0, 0.2);
 }
 
@@ -62,7 +62,7 @@ html, body {
 }
 
 .mat-sidenav-container .mat-sidenav-content .mat-toolbar header nav a {
-  color: white;
+  color: rgb(150, 150, 150);
   padding: 5px 10px;
   margin-left: 5px;
   text-decoration: none;
@@ -71,10 +71,10 @@ html, body {
 }
 
 .mat-sidenav-container .mat-sidenav-content .mat-toolbar header nav a:hover {
-  color: yellow;
+  color: white;
 }
 .mat-sidenav-container .mat-sidenav-content .mat-toolbar header nav a.active {
-  color: yellow;
+  color: white;
   background-color: rgba(0, 0, 0, 0.2);
 }
 

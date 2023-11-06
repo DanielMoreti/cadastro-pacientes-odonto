@@ -1,29 +1,81 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Paciente } from '../paciente-lista/paciente-lista.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PacienteService {
 
-constructor() { }
+  constructor(private _httpClient: HttpClient) { }
 
-  // Método para salvar uma entidade no localStorage
-  saveEntity(entity: any, key: string): void {
-    const entityString = JSON.stringify(entity);
-    localStorage.setItem(key, entityString);
+  public getPacientes(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._httpClient.get('http://localhost:3000/paciente')
+        .subscribe(
+          (data) => {
+            resolve(data); // Resolva a Promise com os dados bem-sucedidos da solicitação HTTP
+          },
+          (error) => {
+            reject(error); // Rejeite a Promise em caso de erro
+          }
+        );
+    });
   }
 
-  // Método para obter uma entidade do localStorage
-  getEntity(key: string): any {
-    const entityString = localStorage.getItem(key);
-    if (entityString) {
-      return JSON.parse(entityString);
-    }
-    return null;
+  public getPaciente(id_paciente: Number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._httpClient.get('http://localhost:3000/paciente' + `/${id_paciente}`)
+        .subscribe(
+          (data) => {
+            resolve(data); // Resolva a Promise com os dados bem-sucedidos da solicitação HTTP
+          },
+          (error) => {
+            reject(error); // Rejeite a Promise em caso de erro
+          }
+        );
+    });
   }
 
-  // Método para remover uma entidade do localStorage
-  removeEntity(key: string): void {
-    localStorage.removeItem(key);
+  public postPaciente(paciente: Paciente): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._httpClient.post('http://localhost:3000/paciente', paciente)
+        .subscribe(
+          (data) => {
+            resolve(data); // Resolva a Promise com os dados bem-sucedidos da solicitação HTTP
+          },
+          (error) => {
+            reject(error); // Rejeite a Promise em caso de erro
+          }
+        );
+    });
+  }
+
+  public putPaciente(paciente: Paciente): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._httpClient.put('http://localhost:3000/paciente' + `/${paciente.id}`, paciente)
+        .subscribe(
+          (data) => {
+            resolve(data); // Resolva a Promise com os dados bem-sucedidos da solicitação HTTP
+          },
+          (error) => {
+            reject(error); // Rejeite a Promise em caso de erro
+          }
+        );
+    });
+  }
+
+  public deletePaciente(id_paciente: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._httpClient.delete('http://localhost:3000/paciente' + `/${id_paciente}`)
+        .subscribe(
+          (data) => {
+            resolve(data); // Resolva a Promise com os dados bem-sucedidos da solicitação HTTP
+          },
+          (error) => {
+            reject(error); // Rejeite a Promise em caso de erro
+          }
+        );
+    });
   }
 }

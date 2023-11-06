@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { PacienteService } from '../services/paciente.service';
+import { CountCadastroPacienteService } from '../services/count-cadastro-paciente.service';
 
 export interface PeriodicElement {
   name: string;
@@ -8,8 +10,8 @@ export interface PeriodicElement {
   symbol: string;
 }
 
-export interface Pacinete {
-  id: number;
+export interface Paciente {
+  id?: number;
   nome: string;
   idade: number;
   email: string;
@@ -18,7 +20,7 @@ export interface Pacinete {
 }
 
 
-const ELEMENT_DATA: Pacinete[] = [
+const ELEMENT_DATA: Paciente[] = [
   { id: 1, nome: 'Daniel', idade: 30, email: 'daniel@example.com', telefone: '123-456-7890', endereco: '' },
   { id: 2, nome: 'Ana', idade: 30, email: 'ana@example.com', telefone: '123-456-7890', endereco: '' },
   { id: 3, nome: 'Elena', idade: 30, email: 'elena@example.com', telefone: '123-456-7890', endereco: '' },
@@ -33,12 +35,41 @@ const ELEMENT_DATA: Pacinete[] = [
 export class PacienteListaComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'nome', 'email', 'idade', 'telefone', 'opcoes'];
-  dataSource = ELEMENT_DATA;
+  dataSource: Paciente[] = [];
+  public numeroAleatorio: number;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private _pacienteService: PacienteService, private _countCadastroPacienteService: CountCadastroPacienteService) {}
+
 
   ngOnInit() {
+    this.consultaListaPacientes();
+    this._countCadastroPacienteService.asObservable().subscribe((el: number) => {
+      console.log(el);
+      
+      this.numeroAleatorio = el;
+    })
   }
+
+  private consultaListaPacientes(): void {
+    this._pacienteService.getPacientes()
+    .then((data) => {
+      this.dataSource = data;
+    })
+    .catch((error) => {
+      console.error('Erro ao buscar dados:', error);
+    });
+  }
+
+  public deletaPaciente(id_paciente: number): void {
+    this._pacienteService.deletePaciente(id_paciente)
+    .then((data) => {
+      this.consultaListaPacientes();
+    })
+    .catch((error) => {
+      console.error('Erro ao buscar dados:', error);
+    });
+  }
+
 
   pacientes: any[] = [
     { nome: 'Paciente 1', idade: 30, email: 'paciente1@example.com', telefone: '123-456-7890' },

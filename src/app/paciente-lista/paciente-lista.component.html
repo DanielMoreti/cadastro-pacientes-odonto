@@ -4,7 +4,7 @@
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
 
-          <!-- Position Column -->
+  <!-- Position Column -->
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef> Id </th>
     <td mat-cell *matCellDef="let element"> {{element.id}} </td>
@@ -37,9 +37,18 @@
 
   <ng-container matColumnDef="opcoes">
     <th mat-header-cell *matHeaderCellDef> Opções </th>
-    <td mat-cell *matCellDef="let element"><button [routerLink]="['/cadastro-paciente', element.id]" mat-raised-button>Consultar</button> </td>
+    <td mat-cell *matCellDef="let element">
+      <button style="margin-right: 10px;" [routerLink]="['/cadastro-paciente', element.id]" mat-stroked-button>Consultar</button>
+      <button (click)="deletaPaciente(element.id)" mat-stroked-button color="warn">Deletar</button>
+    </td>
+
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+<br/>
+<br/>
+<a>Exercicio do Subject service angular, ao sair da tela de cadastro é gerado um numero aleatório no painel: </a>
+<br/>
+<b>Numero Aleatorio: </b> {{ numeroAleatorio || '----' }}

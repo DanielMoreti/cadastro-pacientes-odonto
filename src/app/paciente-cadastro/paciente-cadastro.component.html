@@ -1,5 +1,6 @@
 <br />
-<h1>Cadastro de Paciente</h1>
+<h1 *ngIf="!id_paciente">Cadastro de Paciente</h1>
+<h1 *ngIf="id_paciente">Atualizar Paciente</h1>
 <div class="row">
   <div class="col-md-12">
     <form class="example-form" [formGroup]="cadastroPacienteFormGroup">
@@ -41,10 +42,29 @@
     
         <br/>
         <button routerLink="/lista-pacientes" mat-raised-button>Voltar</button>
-      <button (click)="cadastrarPaciente()" style="float: right;" mat-raised-button color="primary" [disabled]="!cadastroPacienteFormGroup.valid">Cadastrar</button>
+      <button *ngIf="!id_paciente" (click)="mockPaciente(); cadastraPaciente()" style="float: right;" mat-raised-button color="primary" [disabled]="!cadastroPacienteFormGroup.valid">Cadastrar</button>
+      <button *ngIf="id_paciente" (click)="atualizaPaciente()" style="float: right;" mat-raised-button color="primary" [disabled]="!cadastroPacienteFormGroup.valid">Atualizar</button>
     </form>
+    <br/>
   </div>
+  <br/>
+<h4><b>Local Storage - </b>Ultimo cadastro de Paciente:</h4>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Nome</th>
+    <th>Idade</th>
+    <th>Email</th>
+    <th>Telefone</th>
+    <th>Endereço</th>
+  </tr>
+  <tr>
+    <td>{{mockPacienteLocalStorage.id}}</td>
+    <td>{{mockPacienteLocalStorage.nome}}</td>
+    <td>{{mockPacienteLocalStorage.idade}}</td>
+    <td>{{mockPacienteLocalStorage.email}}</td>
+    <td>{{mockPacienteLocalStorage.telefone}}</td>
+    <td>{{mockPacienteLocalStorage.endereco}}</td>
+  </tr>
+</table>
 </div>
-<br/>
-<h4><b>Local Storage</b></h4>
-{{mockPacienteLocalStorage | json }}
