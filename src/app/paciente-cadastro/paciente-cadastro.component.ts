@@ -37,7 +37,6 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
     this.childComponent.validarServicoOnline();
-   
   }
 
   ngOnDestroy(): void {
@@ -48,7 +47,9 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe((params: any) => {
       this.id_paciente = params['id'];
-      this.consultaPorIdPaciente(this.id_paciente);
+      if (this.id_paciente) {
+        this.consultaPorIdPaciente(this.id_paciente);
+      }
     });
 
     this.cadastroPacienteFormGroup = new FormGroup({
@@ -64,15 +65,16 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
 
   private consultaPorIdPaciente(id_paciente: Number) {
     this._pacienteService.getPaciente(id_paciente)
-      .then((data) => {
-        this.cadastroPacienteFormGroup.get('nomeFormControl')?.setValue(data.nome);
-        this.cadastroPacienteFormGroup.get('idadeFormControl')?.setValue(data.idade);
-        this.cadastroPacienteFormGroup.get('emailFormControl')?.setValue(data.email);
-        this.cadastroPacienteFormGroup.get('telefoneFormControl')?.setValue(data.telefone);
-        this.cadastroPacienteFormGroup.get('enderecoFormControl')?.setValue(data.endereco);
-      })
-      .catch((error) => {
-        console.error('Erro ao buscar dados:', error);
+      .subscribe({
+        next: (data) => {
+          this.cadastroPacienteFormGroup.get('nomeFormControl')?.setValue(data.nome);
+          this.cadastroPacienteFormGroup.get('idadeFormControl')?.setValue(data.idade);
+          this.cadastroPacienteFormGroup.get('emailFormControl')?.setValue(data.email);
+          this.cadastroPacienteFormGroup.get('telefoneFormControl')?.setValue(data.telefone);
+          this.cadastroPacienteFormGroup.get('enderecoFormControl')?.setValue(data.endereco);
+        },
+        error: (e) => console.error('Erro ao buscar dados:', e),
+        complete: () => console.info('complete')
       });
   }
 
@@ -86,11 +88,10 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     }
 
     this._pacienteService.postPaciente(paciente)
-      .then((data) => {
-        this.router.navigate(['/lista-pacientes']);
-      })
-      .catch((error) => {
-        console.error('Erro ao buscar dados:', error);
+      .subscribe({
+        next: (v) => this.router.navigate(['/lista-pacientes']),
+        error: (e) => console.error('Erro ao buscar dados:', e),
+        complete: () => console.info('complete')
       });
   }
 
@@ -105,11 +106,10 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     }
 
     this._pacienteService.putPaciente(paciente)
-      .then((data) => {
-        this.router.navigate(['/lista-pacientes']);
-      })
-      .catch((error) => {
-        console.error('Erro ao buscar dados:', error);
+      .subscribe({
+        next: (v) => this.router.navigate(['/lista-pacientes']),
+        error: (e) => console.error('Erro ao buscar dados:', e),
+        complete: () => console.info('complete')
       });
   }
 

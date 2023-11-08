@@ -38,38 +38,35 @@ export class PacienteListaComponent implements OnInit {
   dataSource: Paciente[] = [];
   public numeroAleatorio: number;
 
-  constructor(private router: Router, private _pacienteService: PacienteService, private _countCadastroPacienteService: CountCadastroPacienteService) {}
+  constructor(private router: Router, private _pacienteService: PacienteService, private _countCadastroPacienteService: CountCadastroPacienteService) { }
 
 
   ngOnInit() {
     this.consultaListaPacientes();
     this._countCadastroPacienteService.asObservable().subscribe((el: number) => {
       console.log(el);
-      
+
       this.numeroAleatorio = el;
     })
   }
 
   private consultaListaPacientes(): void {
     this._pacienteService.getPacientes()
-    .then((data) => {
-      this.dataSource = data;
-    })
-    .catch((error) => {
-      console.error('Erro ao buscar dados:', error);
-    });
+      .subscribe({
+        next: (data) => this.dataSource = data,
+        error: (e) => console.error('Erro ao buscar dados:', e),
+        complete: () => console.info('complete')
+      });
   }
 
   public deletaPaciente(id_paciente: number): void {
     this._pacienteService.deletePaciente(id_paciente)
-    .then((data) => {
-      this.consultaListaPacientes();
-    })
-    .catch((error) => {
-      console.error('Erro ao buscar dados:', error);
-    });
+      .subscribe({
+        next: () => this.consultaListaPacientes(),
+        error: (e) => console.error('Erro ao buscar dados:', e),
+        complete: () => console.info('complete')
+      });
   }
-
 
   pacientes: any[] = [
     { nome: 'Paciente 1', idade: 30, email: 'paciente1@example.com', telefone: '123-456-7890' },
