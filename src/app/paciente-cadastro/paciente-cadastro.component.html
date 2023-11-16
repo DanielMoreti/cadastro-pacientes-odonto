@@ -1,0 +1,68 @@
+<br />
+<h1 *ngIf="!id_paciente">Cadastro de Paciente</h1>
+<h1 *ngIf="id_paciente">Atualizar Paciente</h1>
+<div class="row">
+  <div class="col-md-12">
+    <form class="example-form" [formGroup]="cadastroPacienteFormGroup">
+      <mat-form-field class="example-full-width">
+        <mat-label>Nome: </mat-label>
+        <input type="text" matInput formControlName="nomeFormControl" [errorStateMatcher]="matcher"
+          placeholder="Nome do paciente">
+        <mat-error *ngIf="cadastroPacienteFormGroup.get('nomeFormControl')?.hasError('required')">
+          Nome é <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Idade: </mat-label>
+        <input type="text" matInput formControlName="idadeFormControl" [errorStateMatcher]="matcher"
+          placeholder="Idade do paciente">
+        <mat-error *ngIf="cadastroPacienteFormGroup.get('idadeFormControl')?.hasError('required')">
+          Idade é <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="emailFormControl" [errorStateMatcher]="matcher"
+          placeholder="E-mail do paciente">
+        <mat-error *ngIf="cadastroPacienteFormGroup.get('emailFormControl')?.hasError('required')">
+          Email é <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Telefone: </mat-label>
+        <input type="text" matInput formControlName="telefoneFormControl" [errorStateMatcher]="matcher"
+          placeholder="(99) 99999-9999">
+        <mat-error *ngIf="cadastroPacienteFormGroup.get('telefoneFormControl')?.hasError('required')">
+          Telefone é <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    
+      <app-paciente-cadastro-endereco
+        [cadastroPacienteFormGroup]="cadastroPacienteFormGroup"></app-paciente-cadastro-endereco>
+    
+        <br/>
+        <button routerLink="/lista-pacientes" mat-raised-button>Voltar</button>
+      <button *ngIf="!id_paciente" (click)="mockPaciente(); cadastraPaciente()" style="float: right;" mat-raised-button color="primary" [disabled]="!cadastroPacienteFormGroup.valid">Cadastrar</button>
+      <button *ngIf="id_paciente" (click)="atualizaPaciente()" style="float: right;" mat-raised-button color="primary" [disabled]="!cadastroPacienteFormGroup.valid">Atualizar</button>
+    </form>
+    <br/>
+  </div>
+  <br/>
+<h4><b>Local Storage - </b>Ultimo cadastro de Paciente:</h4>
+<table *ngIf="mockPacienteLocalStorage">
+  <tr>
+    <th>Nome</th>
+    <th>Idade</th>
+    <th>Email</th>
+    <th>Telefone</th>
+    <th>Endereço</th>
+  </tr>
+  <tr>
+    <td>{{mockPacienteLocalStorage.nome}}</td>
+    <td>{{mockPacienteLocalStorage.idade}}</td>
+    <td>{{mockPacienteLocalStorage.email}}</td>
+    <td>{{mockPacienteLocalStorage.telefone}}</td>
+    <td>{{mockPacienteLocalStorage.endereco}}</td>
+  </tr>
+</table>
+</div>

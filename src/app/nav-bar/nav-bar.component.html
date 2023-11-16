@@ -1,0 +1,27 @@
+<mat-sidenav-container>
+
+	<mat-sidenav #sidenav mode="over">
+		<label>Clínica Odontológica</label>
+		<hr />
+		<nav>
+			<a routerLink="lista-pacientes" (click)="clickHandler()" routerLinkActive="active">Lista de Pacientes</a>
+			<a routerLink="cadastro-paciente" (click)="clickHandler()" routerLinkActive="active">Cadastro de Pacientes</a>
+		</nav>
+	</mat-sidenav>
+
+	<mat-sidenav-content>
+		<mat-toolbar color="primary">
+			<header>
+				<mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+				<label>Clínica Odontológica</label>
+				<nav>
+					<a routerLink="lista-pacientes" routerLinkActive="active">Lista de Pacientes</a>
+					<a routerLink="cadastro-paciente" routerLinkActive="active">Cadastro de Pacientes</a>
+				</nav>
+			</header>
+		</mat-toolbar>
+		<section>
+			<router-outlet></router-outlet>
+		</section>
+	</mat-sidenav-content>
+</mat-sidenav-container>
